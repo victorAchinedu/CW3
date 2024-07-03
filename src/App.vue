@@ -23,6 +23,7 @@ export default {
     LessonComponent,
     CheckoutForm
   },
+
   data() {
     return {
       lessons: [],
