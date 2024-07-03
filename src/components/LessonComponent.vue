@@ -134,4 +134,10 @@ export default {
   background-color: #ccc;
   cursor: not-allowed;
 }
+
+@media (max-width:575.98px) {
+  .product {
+    width: 100%;
+  }
+}
 </style>
