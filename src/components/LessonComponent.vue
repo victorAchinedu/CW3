@@ -30,24 +30,25 @@
 
 </div>
 
-    <main id="main-wrapper">
-      <div class="product-container">
-        <div class="product" v-for="(lesson, index) in lessons" :key="index">
-          <i :class="lesson.icon"></i>
-          <div class="lesson-details">
-            <h2>{{ lesson.title }}</h2>
-            <p>Location: {{ lesson.Location }}</p>
-            <p>Price: {{ lesson.price }}</p>
-            <p>Slots Available: {{ lesson.spaces }}</p>
-            <button class="success-button" @click="addLessonToCart(lesson)" :disabled="lesson.availableInventory === 0">Add to Cart</button>
-            <span v-if="lesson.availableInventory === 0">All out!</span>
-            <span v-else-if="lesson.availableInventory < 5">Only {{ lesson.availableInventory - cartCount(lesson._id) }} left!</span>
-            <span v-else>Buy Now!</span>
-
-          </div>
+<main id="main-wrapper">
+    <div class="product-container">
+      <div class="product" v-for="(lesson, index) in lessons" :key="index">
+        <i :class="lesson.icon"></i>
+        <div class="lesson-details">
+          <h2>{{ lesson.title }}</h2>
+          <p>Location: {{ lesson.Location }}</p>
+          <p>Price: {{ lesson.price }}</p>
+          <p>Slots Available: {{ lesson.spaces }}</p>
+          <button class="success-button" @click="addLessonToCart(lesson)" :disabled="lesson.spaces === 0">Add to Cart</button>
+          <span v-if="lesson.spaces === 0">All out!</span>
+          <span v-else-if="lesson.spaces - this.cartCount(lesson._id) === 1">Only 1 left!</span>
+          <span v-else>Only {{ lesson.spaces - this.cartCount(lesson._id) }} left!</span>
+          
         </div>
+        <span>{{ lesson.spaces }}</span>
       </div>
-    </main>
+    </div>
+  </main>
   </div>
 </template>
 
@@ -63,7 +64,8 @@ export default {
       searchTerm: '',
       sortAttribute: 'subject',
         sortOrder: 'asc',
-        baseURL: "https://cw2-backend-lyart.vercel.app/"
+        baseURL: "https://cw2-backend-lyart.vercel.app/",
+        localCartCount: this.cartCount
     };
   },
   created() {

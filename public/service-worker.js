@@ -1,5 +1,7 @@
 var cacheName = "afterschool-v1";
-var cacheFiles = [];
+var cacheFiles = [
+
+];
 
 // The install handler takes care of precaching the resources we always need.
 self.addEventListener("install", (e) => {
@@ -7,25 +9,25 @@ self.addEventListener("install", (e) => {
     e.waitUntil(async () => {
         const cache = await caches.open(cacheName);
         console.log("[ServiceWorker] - Caching app files");
-        await cache.addAll(cacheFiles);
+        return cache.addAll(cacheFiles);
     });
 });
 
 // The activate handler takes care of cleaning up old caches.
-self.addEventListener("activate", (e) => {
-    e.waitUntil(async () => {
-        const keyList = await caches.keys();
-        await Promise.all(
-            keyList.map((key) => {
-                if (key !== cacheName) {
-                    console.log("[ServiceWorker] - Removing old cache", key);
-                    return caches.delete(key);
-                }
-            })
-        );
-    });
-    e.waitUntil(self.clients.claim());
-});
+// self.addEventListener("activate", (e) => {
+//     e.waitUntil(async () => {
+//         const keyList = await caches.keys();
+//         await Promise.all(
+//             keyList.map((key) => {
+//                 if (key !== cacheName) {
+//                     console.log("[ServiceWorker] - Removing old cache", key);
+//                     return caches.delete(key);
+//                 }
+//             })
+//         );
+//     });
+//     e.waitUntil(self.clients.claim());
+// });
 
 self.addEventListener("fetch", (event) => {
     var allowedUrls = [self.location.origin, "https://cw2-backend-lyart.vercel.app/"];

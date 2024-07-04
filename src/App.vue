@@ -2,14 +2,28 @@
   <div id="app">
     <header>
       <h1>After School Classes</h1>
-      <button @click="showCheckout = !showCheckout">
+      <button @click="changeComponent">
         {{ showCheckout ? 'Back to Lessons' : 'View Cart' }} ({{ cart.length }})
       </button>
     </header>
 
-    <LessonComponent v-if="!showCheckout" :canAddToCart="canAddToCart" :cartCount="cartCount"
+    <!-- <LessonComponent v-if="!showCheckout" :canAddToCart="canAddToCart" :cartCount="cartCount"
       @add-to-cart="addToCart" />
-    <CheckoutForm v-else :cart="cart" @remove-from-cart="removeFromCart" @submit-order="submitOrder" />
+    <CheckoutForm v-else :cart="cart" @remove-from-cart="removeFromCart" @submit-order="submitOrder" /> -->
+
+    <!-- <component :is="activeComponent" :canAddToCart="canAddToCart" :cartcount="cartCount()" @add-to-cart="addToCart" v-if="activeComponent === LessonComponent"></component>
+
+    <component :is="activeComponent" :cart="cart" @remove-from-cart = "removeFromCart" @submit-order="submitOrder" :cartCount="cartCount" v-else></component> -->
+
+    <component :is="activeComponent" 
+    :canAddToCart="canAddToCart"
+    :cartCount="cartCount"
+    @add-to-cart="addToCart"
+    :cart="cart"
+    @remove-from-cart="removeFromCart"
+    @submit-order="submitOrder"
+     ></component>
+
   </div>
 </template>
 
@@ -35,10 +49,14 @@ export default {
       lessons: [],
       cart: [],
       showCheckout: false,
-      baseURL: "https://cw2-backend-lyart.vercel.app/"
+      baseURL: "https://cw2-backend-lyart.vercel.app/",
+      activeComponent: "LessonComponent"
     };
   },
   methods: {
+    changeComponent(){
+        this.activeComponent = this.activeComponent === "LessonComponent" ? "CheckoutForm" : "LessonComponent";
+    },
     async submitOrder(order) {
       
         try {
